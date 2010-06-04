@@ -1,8 +1,8 @@
 body { background:#000 }
-#main { width:700px; height:700px; overflow:hidden; display:block; margin:50px auto; background:url(/images/bg.jpg) }
+#main { width:700px; height:700px; overflow:hidden; display:block; margin:50px auto; background:url(/images/bg.jpg); position:relative }
 #intro { display:none }
 #help { display:none }
-#game { display:block }
+#game { display:block; width:100%; height:100%; overflow:hidden }
 #results { display:none }
 h1 { background:url(/images/title.jpg); display:block; width:100%; height:85px; text-indent: -2000px}
 #game div { display:block; position:absolute; }
