@@ -6,10 +6,17 @@ function Game() {
 
   this.started     = false;
   this.allow_input = false;
+  this.limit       = 30000; //milliseconds
   
   this.initialize = function() {
-    this.initialize_behaviours();
-    // dont forget the preloader
+    this.steve    = new Steve(this);
+    this.fireball = new Fireball(this);
+    this.input    = new Input(this);
+    this.timer    = new Timer(this);
+    this.steve.initialize();
+    this.fireball.initialize();
+    this.input.initialize();
+    this.timer.initialize();    
   };
   
   this.show_help = function() {
@@ -27,15 +34,21 @@ function Game() {
     $("#help").hide();
     $("#game").show();
 
-    this.render_screen();
+    this.render();
   };
   
   this.reset = function() {
     $("#intro").show();
     $("#game").hide();
     $("#results").hide();
-    this.kill_timer();
-
+    this.kill_timers();
+  };
+  
+  this.render = function() {
+    this.steve.render();
+    this.fireball.render();
+    this.input.render();
+    this.timer.render();
   };
   
   this.render_timer  = function() {
@@ -132,3 +145,109 @@ function Game() {
     }
   };
 }
+
+
+function Fireball(game) {
+  this.game           = game;
+  this.dom            = $("#fireball");
+  this.animating      = false;
+  this.classes        = ["typing_1","typing_2","typing_3"];
+  this.current_class  = 0;
+  
+  this.initialize     = function() {
+    
+  };
+  this.render = function() {
+    var fb = this;
+    fb.dom.show().attr("class","");
+    fb.start();
+  };
+  this.start = function() {
+    var fb   = this;
+    if (this.animating==false){
+      this.animating = true;
+      this.dom.everyTime(200,function(){
+        if (fb.current_class+1<fb.classes.length) {
+          fb.current_class += 1;
+        } else {
+          fb.current_class = 0;
+        }
+        var css = fb.classes[fb.current_class]
+        fb.dom.attr("class"," ").addClass(css);
+      });
+    }
+  };
+  this.stop = function() {
+    if (this.animating==true){
+      this.animating=false;
+      this.dom.stopTime();
+    }
+  };
+};
+
+function Steve(game) {
+  this.game      = game;
+  this.dom       = $("#steve");
+  this.animating = true;
+  this.initialize = function() {
+  
+  };
+  this.render = function() {
+  
+  };
+  this.start = function() {
+  
+  };
+  this.stop = function() {
+  
+  };
+};
+
+function Input(game) {
+  this.game      = game;
+  this.dom       = $("#input");
+  this.animating = true;
+  this.initialize = function() {
+  
+  };
+  this.render = function() {
+  
+  };
+  this.start = function() {
+  
+  };
+  this.stop = function() {
+  
+  };
+};
+
+function Timer(game) {
+  this.game      = game;
+  this.dom       = $("#timer");
+  this.animating = true;
+  this.limit     = game.limit;
+  
+  this.initialize = function() {
+    this.dom.text(Math.round(this.limit/1000));
+  };
+  this.render = function() {
+    this.start();
+  };
+  this.start = function() {
+    var timer = this;
+    this.dom.everyTime(1000,function(){
+      var t = Number(timer.dom.text());
+      if (t<11) { 
+        t = "0" + (t-1); 
+        timer.dom.addClass("urgent");
+      } else { 
+        t-=1; 
+      };
+      timer.dom.text(t);
+      
+    }, this.limit/1000);
+  };
+  this.stop = function() {
+  
+  };
+};

@@ -9,7 +9,14 @@
   <script src="/javascripts/jquery.js"></script>
   <script src="/javascripts/jquery-ui.js"></script>
   <script src="/javascripts/jquery-timers.js"></script>
-  <script src="/javascripts/application.js"></script>  
+  <script src="/javascripts/application.js"></script>
+  <script>
+  $(function(){
+    var game = new Game();
+    game.initialize();
+    game.start();
+  });
+  </script>
 </head>
 <body>
 
