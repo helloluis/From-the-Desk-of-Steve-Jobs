@@ -2,11 +2,17 @@
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outline:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}.clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0}.clearfix:after{clear:both;content:' ';display:block;font-size:0;line-height:0;visibility:hidden;width:0;height:0}.clearfix{display:inline-block}* html .clearfix{height:1%}.clearfix{display:block}body{font:13px/1.5 Helvetica,Arial,FreeSans,sans-serif}a:focus{outline:1px dotted invert}hr{border:0 #ccc solid;border-top-width:1px;clear:both;height:0}h1{font-size:25px}h2{font-size:23px}h3{font-size:21px}h4{font-size:19px}h5{font-size:17px}h6{font-size:15px}ol{list-style:decimal}ul{list-style:disc}li{margin-left:30px}p,dl,hr,h1,h2,h3,h4,h5,h6,ol,ul,pre,table,address,fieldset{margin-bottom:20px}
 
 body { background:#000 }
-
+h1, h2, h3 { color:#fff }
+p { color:#fff; font-size:14px; }
 #main { width:700px; height:700px; overflow:hidden; display:block; margin:0px auto 10px auto; background:url(/images/bg.jpg); position:relative }
-#intro { display:none; position:absolute; }
-#help { display:none; position:absolute; }
+#hud { display:block; position:absolute; width:100%; height:100%; background:url(/images/bg_intro.jpg) no-repeat; z-index:100; }
+#hud .hud_bg { display:block; position:absolute; background:#121212; border:5px solid #000; padding:5%; width:60%; height:60%; margin:0% 15% 15% 15%; text-align:center; z-index:99; opacity:0.7 }
+#hud .content { display:block; position:absolute; z-index:101; padding:5%; width:60%; height:60%; margin:5% 15% 15% 15%; text-align:center; }
+
+#intro { display:none; }
+#help { display:none; }
 #game { display:block; position:absolute; top:0; left:0; width:100%; height:100%; overflow:hidden }
+#defeat { width:100%; height:100%; background:url(/images/angry_flare.jpg); display:none }
 #results { display:none; position:absolute; }
 #credits, #share { display:block; margin:0 auto; bottom:0; left:0; width:650px; padding:10px 25px 10px 25px; height:50px; background:#121212; color:#999; overflow:hidden; margin-bottom:20px; }
 #share { margin-bottom:10px; }
@@ -16,24 +22,33 @@ h1 { background:url(/images/title.jpg); display:block; width:100%; height:85px; 
 #game div { display:block; position:absolute; background-repeat:no-repeat }
 #lamp { background:url(/images/lamp.png); width:363px; height:505px; top:70px; left:0px; z-index:8 }
 #desk { background:url(/images/desk.jpg); width:100%; height:195px; bottom:0px; left:0px; z-index:1; }
-#fireball { background:url(/images/fireball_pause.png); width:413px; height:408px; left:124px; top:270px; z-index:10; }
-.typing_1 { background-image:url(/images/fireball_typing_1.png); }
-.typing_2 { background-image:url(/images/fireball_typing_2.png); }
-.typing_3 { background-image:url(/images/fireball_typing_3.png); }
+#fireball { background:url(/images/fireball_pause.png); width:413px; height:408px; left:120px; top:270px; z-index:10; }
+.typing_1 { background-image:url(/images/fireball_typing_1.png) !important; }
+.typing_2 { background-image:url(/images/fireball_typing_2.png) !important; }
+.typing_3 { background-image:url(/images/fireball_typing_3.png) !important; }
+
+#help h2 { color:#ddd; }
+#help h3 { color:#ccc; }
+#help p { font-size:14px; color:#fff; }
+strong { color:#fc0; }
 
 #steve { width:345px; height:250px; top:293px; right:0; }
 #steve_hand { position:absolute; background:url(/images/steve_hand.png); width:223px; height:102px; top:160px; left:200px; z-index:7 }
 #steve_body { position:absolute; background:url(/images/steve_body.png); width:325px; height:222px; top:10px; left:230px; z-index:2 }
 #steve_head { position:absolute; background:url(/images/steve_head_snoring_1.png); width:292px; height:229px; top:0; left:0; z-index:6 }
-#steve_head.snoring_2 { background-image:url(/images/steve_head_snoring_2.png); }
-#steve_head.half_awake { background-image:url(/images/steve_head_half_awake.png); }
+#steve_head.snoring_2 { background-image:url(/images/steve_head_snoring_2.png)!important; }
+#steve_head.half_awake_1 { background-image:url(/images/steve_head_half_awake_1.png); }
+#steve_head.half_awake_2 { background-image:url(/images/steve_head_half_awake_2.png); }
 #steve_head.awake { background-image:url(/images/steve_head_awake.png); }
+
+#steve_angry { width:10px; height:10px; position:absolute; }
 
 #ipad { background:url(/images/ipad_off.png); width:209px; height:323px; top:275px; left:25px; z-index:9; }
 #ipad.on { background-image:url(/images/ipad_on.png); }
 
-#timer { background:url(/images/timer.png) center center; width:130px; height:130px; top: 100px; left:300px; z-index:12; }
-#input { background:url(/images/input.png); width:650px; height:70px; bottom:0px; left:5px; z-index:11; padding:15px 25px; }
+#timer { background:url(/images/timer.png) center center; width:100px; height:100px; padding:15px; text-align:center; top: 100px; left:290px; z-index:12; font: 84px "Times New Roman",Georgia,roman,serif; color:#ccc}
+.urgent { color:#f00 !important }
+#input { background:url(/images/input.png); width:650px; height:70px; bottom:0px; left:5px; z-index:11; padding:15px 25px; overflow:hidden; text-align:center; font-size:40px; color:#444 }
 
 #share .sharethis, #share .facebook_like { float:left; width:50%; }
 #share .sharethis { margin-top:10px; width:45%; margin-left:5%; }
@@ -41,3 +56,11 @@ h1 { background:url(/images/title.jpg); display:block; width:100%; height:85px; 
 #credits p a { color:#fc0; }
 #credits form { float:right; display:block; margin-left:10px; }
 
+.try_again { background:url(/images/try_again.png) no-repeat; width:250px; height:80px; top:550px; left:200px; position:absolute; cursor:pointer }
+.start { background:url(/images/start.png) no-repeat; width:170px; height:80px; top:350px; left:160px; position:absolute; cursor:pointer }
+.help { background:url(/images/go.png) no-repeat; width:170px; height:80px; top:300px; left:170px; position:absolute; cursor:pointer; z-index:9; }
+#email_sent { background:#ffc; padding:10px; position:absolute; top:560px; left:300px; width:80px; height:20px; text-align:center; font-size:14px; font-weight:bold; color:#333; z-index:15; opacity:0.0}
+
+.results .score { font-size:84px; color:#fff }
+.results .score span { font-size:24px; color:#999 }
+.results .try_again { top:350px; left:170px; }
