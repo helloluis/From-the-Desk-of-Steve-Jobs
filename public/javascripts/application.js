@@ -10,7 +10,7 @@ function Game() {
     game.paused       = true;
     game.defeated     = false;
     game.limit        = 30000; //milliseconds
-    game.score        = 0;
+    game.score        = 60;
     game.steve        = new Steve(game);
     game.fireball     = new Fireball(game);
     game.input        = new Input(game);
@@ -22,6 +22,7 @@ function Game() {
     game.timer.initialize();
     
     game.show_hud("intro");
+    $("#defeat").hide();
   };
   
   this.show_hud = function(page) {
@@ -33,8 +34,9 @@ function Game() {
     } else if (page == "help") {
       $(".start").unbind("click").click(function(){ game.start(); });
     } else if (page == "results") {
-      $(".score").html( this.score + "<span>emails sent</span>");
+      $(".score").html("<strong>" + this.score + "</strong><span>emails sent!</span><span class='caption'>" + this.get_caption(this.score) + "</span>");
       $(".try_again").unbind("click").click(function(){ game.reset(); });
+      this.initialize_sharing();
     }
   };
   
@@ -81,8 +83,10 @@ function Game() {
     
   this.defeat = function() {
     if (this.defeated==false) {
+      var game = this;
       $("#game").hide();
       $("#defeat").show();
+      $(".try_again").unbind("click").click(function(){ game.reset(); });
       this.defeated     = true;
       this.allow_input  = false;
       this.steve.stop();
@@ -108,53 +112,32 @@ function Game() {
     this.score+=1;
   };
   
-  this.tally_results = function() {
-    var game    = this;
-    
-    $("h3","#results").remove();
-    $("h1","#results").remove();
-    $("p","#results").remove();
-    
-    var results = $("#results").fadeIn(500);
-    var title   = $("<h1 class='title'>GAME OVER!</h1>").appendTo(results);
-    
-    results.oneTime(3000, function(){ 
-      loading.remove();
+  this.initialize_sharing = function() {
+    var game = this;
       
-      var try_again     = $("<div></div>").addClass("bttn_restart").text("TRY AGAIN").click(function(){
-        results.fadeOut(500);
-        game.start();
-      }).appendTo(results);
-      
-      var restart_game  = $("<div></div>").addClass("quit").text("Quit ...").click(function(){
-          game.reset();
-      }).appendTo(results);
-      
-      $("#share","#results").click(function(){
-        FB.ui({
-            method    : 'stream.publish',
-            attachment: {
-              name  : 'From the Desk of Steve Jobs',
-              caption: 'I wrote ' + game.score + ' emails from the desk of Steve Jobs!',
-              description : ( game.score + " emails sent in " + game.max_time + " seconds, averaging " + (game.score/game.max_time) + " emails/second." ),
-              href: 'http://stevejobs.syndeolabs.com/'
-            },
-            action_links: [
-              { text: 'Go, Fireball!', href: 'http://stevejobs.syndeolabs.com/' }
-            ]
+    $(".share").click(function(){
+      FB.ui({
+          method    : 'stream.publish',
+          attachment: {
+            name  : 'From the Desk of Steve Jobs',
+            caption: 'I wrote ' + game.score + ' emails from the desk of Steve Jobs!',
+            description : ( game.score + " emails sent in " + game.max_time + " seconds, averaging " + (game.score/game.max_time) + " emails/second." ),
+            href: 'http://stevejobs.syndeolabs.com/'
           },
-          function(response) {
-            if (response && response.post_id) {
-              alert('Post was published.');
-            } else {
-              alert('Post was not published.');
-            }
+          action_links: [
+            { text: 'Go, Fireball!', href: 'http://stevejobs.syndeolabs.com/' }
+          ]
+        },
+        function(response) {
+          if (response && response.post_id) {
+            alert('Post was published.');
+          } else {
+            alert('Post was not published.');
           }
-        );
-      }); 
+        }
+      );
+    }); 
 
-    });
-    
   };
   
   this.initialize_behaviours = function() {
@@ -165,18 +148,26 @@ function Game() {
     });
   };
   
-  this.get_caption = function() {
+  this.get_caption = function(score) {
     
-    var win_captions  = ["Is that you, Gruber?","The real Fake Steve is in da house!","You took the words right out of Steve's mouth."];
-    var lose_captions = ["You're a Flash fan aren't you?", "You've been spending too much time with Outlook, son.", "Go back to designing magic mice."];
-    
-    if (this.score > this.goal) {
-      return win_captions[Math.floor(Math.random()*win_captions.length)];
-    } else if (this.score < this.goal) {
-      return lose_captions[Math.floor(Math.random()*lose_captions.length)];
-    } else {
-      return "Your AppleTV team needs you.";
+    if (score > 70) {
+      return "Is that you, Gruber?";
+    } else if (score > 50 && score <= 69) {
+      return "You're an Apple Genius!";
+    } else if (score > 40 && score <= 49) {
+      return "You took the words right out of Steve's mouth.";
+    } else if (score > 30 && score <= 39) {
+      return "Not bad, for a dog.";
+    } else if (score > 20 && score <= 29) {
+      return "You've been spending too much time with Outlook.";
+    } else if (score > 10 && score <= 19) {
+      return "Type faster, Fireball!";
+    } else if (score > 5 && score <= 9) {
+      return "Too slow, Fireball. Keep trying."
+    } else if (score < 4) {
+      return "You're a Flash fan aren't you?";
     }
+    
   };
 }
 
@@ -273,12 +264,12 @@ function Steve(game) {
       everyTime(200,function(){
         $(this).toggleClass("half_awake_1").toggleClass("half_awake_2");
         if (steps < search_start) {
-          console.log(steps + " STARTING TO SEARCH ...");
+          //console.log(steps + " STARTING TO SEARCH ...");
         } else if (steps>=search_start && steps<=search_end) {
-          console.log(steps + " SEARCHING...");
+          //console.log(steps + " SEARCHING...");
           if (st.game.paused==false) st.game.defeat();        
         } else if (steps>search_end) {
-          console.log(steps + " STOPPING...");
+          //console.log(steps + " STOPPING...");
           $(this).removeClass("half_awake_1").removeClass("half_awake_2");
           $(this).stopTime();
           st.start();
@@ -352,7 +343,7 @@ function Timer(game) {
   this.limit     = game.limit;
   
   this.initialize = function() {
-    this.dom.text(Math.round(this.limit/1000));
+    this.dom.removeClass("urgent").text(Math.round(this.limit/1000));
     this.stop();
   };
   this.render = function() {

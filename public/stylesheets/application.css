@@ -18,7 +18,7 @@ p { color:#fff; font-size:14px; }
 #share { margin-bottom:10px; }
 #loader { display:block; width:1px; height:1px; }
 
-h1 { background:url(/images/title.jpg); display:block; width:100%; height:85px; text-indent: -2000px}
+h1 { background:url(/images/title.jpg) no-repeat center center; display:block; width:100%; height:85px; text-indent: -2000px}
 #game div { display:block; position:absolute; background-repeat:no-repeat }
 #lamp { background:url(/images/lamp.png); width:363px; height:505px; top:70px; left:0px; z-index:8 }
 #desk { background:url(/images/desk.jpg); width:100%; height:195px; bottom:0px; left:0px; z-index:1; }
@@ -61,6 +61,10 @@ strong { color:#fc0; }
 .help { background:url(/images/go.png) no-repeat; width:170px; height:80px; top:300px; left:170px; position:absolute; cursor:pointer; z-index:9; }
 #email_sent { background:#ffc; padding:10px; position:absolute; top:560px; left:300px; width:80px; height:20px; text-align:center; font-size:14px; font-weight:bold; color:#333; z-index:15; opacity:0.0}
 
-.results .score { font-size:84px; color:#fff }
-.results .score span { font-size:24px; color:#999 }
-.results .try_again { top:350px; left:170px; }
+#hud .content .score strong { font-size:84px; color:#fff; display:block; line-height:1em }
+#hud .content .score span { font-size:24px; color:#aaa; display:block }
+#hud .content .score span.caption { color:#fff; margin-top:10px; }
+#hud .content .try_again { top:320px; left:130px; }
+
+.share { background:url(/images/facebook_64.png) no-repeat top left; padding:15px 5px 5px 70px; color:#fff; font-size:20px; height:44px; text-align:left; width:60%; margin:20px auto}
+.share:hover { color:#ccc }
